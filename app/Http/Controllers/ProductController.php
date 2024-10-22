@@ -27,6 +27,7 @@ class ProductController extends Controller
             'stock' => 'required|integer|min:0',
             'is_available' => 'boolean',
             'expiration_date' => 'nullable|date',
+            'category_id' => 'nullable|exists:categories,id', // Validar que la categoría exista
             'sku' => 'required|string|unique:product,sku|max:100',
         ]);
 
@@ -41,13 +42,11 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        $product = Product::find($id);
+        // Utilizamos with('category') para cargar toda la información de la categoría asociada
+        $product = Product::with('category')->findOrFail($id);
 
-        if (!$product) {
-            return response()->json(['message' => 'Product not found'], 404);
-        }
-
-        return response()->json($product, 200);
+        // Devolvemos el producto junto con toda la información de la categoría
+        return response()->json($product);
     }
 
     /**
@@ -69,6 +68,7 @@ class ProductController extends Controller
             'stock' => 'sometimes|required|integer|min:0',
             'is_available' => 'boolean',
             'expiration_date' => 'nullable|date',
+            'category_id' => 'nullable|exists:categories,id', // Validar que la categoría exista
             'sku' => 'sometimes|required|string|max:100|unique:product,sku,' . $id,
         ]);
 

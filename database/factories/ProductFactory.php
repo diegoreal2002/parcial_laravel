@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Product;
+use App\Models\Category; // Importamos el modelo de Category
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductFactory extends Factory
@@ -23,6 +24,7 @@ class ProductFactory extends Factory
             'stock' => $this->faker->numberBetween(1, 100), // Stock entre 1 y 100
             'is_available' => $this->faker->boolean(),
             'expiration_date' => $this->faker->optional()->date(),
+            'category_id' => Category::inRandomOrder()->first()->id, // Selecciona una categoría aleatoria
             'sku' => $this->faker->unique()->lexify('SKU-?????'),
         ];
     }

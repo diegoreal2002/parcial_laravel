@@ -17,9 +17,15 @@ class Product extends Model
         'stock',
         'is_available',
         'expiration_date',
-        'category',
+        'category_id',
         'sku',
     ];
     protected $table = 'product';
+
+    // Relación con Category (Muchos a uno)
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }
 
